@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
-import { Message, /*PermissionFlagsBits,*/ ChannelType } from "discord.js";
+import { Message, PermissionFlagsBits, ChannelType } from "discord.js";
 import { envParseArray } from "../lib/env-parser";
 import { sendLogMessage } from "../lib/utils";
 
@@ -23,7 +23,7 @@ export class MessageEvent extends Listener {
         const arrayForbiddenEmojis = forbiddenEmojis.filter(e => message.content.includes(e));
 
         // If there is a forbidden emoji in the message
-        if (arrayForbiddenEmojis.length > 0 /*&& !message.member?.permissions.has(PermissionFlagsBits.Administrator)*/) {
+        if (arrayForbiddenEmojis.length > 0 && !message.member?.permissions.has(PermissionFlagsBits.Administrator)) {
             logger.info(`Received a message with a forbidden emoji from ${message.author.tag}: ${message.content}`);
             const deleted = await message.delete().then(() => true).catch((err) => {console.log(err); return false});
             await sendLogMessage(logger, message.url, message.channel.toString(), message.member!, message.client, deleted, arrayForbiddenEmojis)
