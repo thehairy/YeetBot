@@ -26,7 +26,7 @@ export class MessageEvent extends Listener {
         if (!reaction.client.reportedMessages) reaction.message.client.reportedMessages = [];
 
         // Since we don't want any flag reactions anymore, yeet those
-        if (reaction.emoji.name?.includes('flag')) {
+        if ((reaction.emoji.name?.match(/[\u{1F1E6}-\u{1F1FF}][\u{1F1E6}-\u{1F1FF}]/gu) ?? []).length > 0) {
             return reaction.remove();
         }
 
