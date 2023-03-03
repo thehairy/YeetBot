@@ -25,6 +25,11 @@ export class MessageEvent extends Listener {
         if (user.bot || member?.permissions.has(PermissionFlagsBits.Administrator)) return;
         if (!reaction.client.reportedMessages) reaction.message.client.reportedMessages = [];
 
+        // Since we don't want any flag reactions anymore, yeet those
+        if (reaction.emoji.name?.includes('flag')) {
+            return reaction.remove();
+        }
+
         const { logger } = this.container;
         const forbiddenEmojis = envParseArray('FORBIDDEN_EMOJIS');
         const arrayForbiddenEmojis = forbiddenEmojis.filter(e => e === reaction.emoji.id || e === reaction.emoji.name);
